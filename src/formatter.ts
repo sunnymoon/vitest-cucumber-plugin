@@ -1,6 +1,4 @@
 import { Formatter, IFormatterOptions } from '@cucumber/cucumber';
-import { it, suite } from 'vitest';
-import { setFeature, setScenario, orderedDocuments, missingStep } from './cucumber-helpers.js';
 import {
     Envelope,
     GherkinDocument,
@@ -14,18 +12,23 @@ import {
     TestStepResultStatus
 } from '@cucumber/messages';
 
-export class SimpleFormatter extends Formatter {
+const { setFeature, setScenario, missingStep } = globalThis.__vitestCucumberStateHelpers;
 
-    scenarios: {
+
+export default class SimpleFormatter extends Formatter {
+
+
+
+    private readonly scenarios: {
         [id: string]: Pickle
     } = {};
-    steps: {
+    private readonly steps: {
         [id: string]: PickleStep
     } = {};
-    testCases: {
+    private readonly testCases: {
         [id: string]: TestCase
     } = {};
-    testSteps: {
+    private readonly testSteps: {
         [id: string]: TestStep
     } = {};
 
@@ -118,27 +121,15 @@ export class SimpleFormatter extends Formatter {
     }
 
     onTestRunFinished(/*testRunFinished: TestRunFinished*/) {
-        for (const feature of orderedDocuments) {
-            suite(feature.name, () => {
-                for (const scenario of feature.scenarios) {
-                    suite(scenario.name, () => {
-                        for (const step of scenario.steps) {
-                            it(step.pattern.toString(), async (...args) => {
-                                await step.userCode.apply(args);
-                            });
-                        }
-                    });
-                }
-            });
-        }
-
-
+        //ignore - set at the runner
     }
 
     constructor(options: IFormatterOptions) {
         super(options);
-        
+
         options.eventBroadcaster.on('envelope', (envelope: Envelope) => {
+
+            console.log(Object.keys(envelope)[0]);
 
             if (envelope.gherkinDocument) {
                 this.onGherkinDocument(envelope.gherkinDocument)

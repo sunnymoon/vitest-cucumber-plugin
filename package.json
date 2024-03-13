@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "packageManager": "yarn@1.22.21",
   "engines": {
@@ -15,27 +15,30 @@
   "exports": {
     ".": {
       "import": {
-        "default": "./dist/index.js",
-        "types": "./dist/index.d.ts"
-      },
-      "require": {
-        "default": "./dist/index.cjs",
+        "default": "./dist/index.mjs",
         "types": "./dist/index.d.ts"
       }
     },
     "./config": {
-      "types": "./dist/vitest-cucumber-plugin.d.ts",
-      "require": "./dist/vitest-cucumber-plugin.cjs",
-      "default": "./dist/vitest-cucumber-plugin.js"
+      "types": "./dist/plugin.d.ts",
+      "default": "./dist/plugin.mjs"
     },
     "./runner": {
-      "types": "./dist/vitest-cucumber-runner.d.ts",
-      "require": "./dist/vitest-cucumber-runner.cjs",
-      "default": "./dist/vitest-cucumber-runner.js"
+      "types": "./dist/runner.d.ts",
+      "default": "./dist/runner.mjs"
+    },
+    "./cucumber": {
+      "types": "./dist/cucumber.d.ts",
+      "default": "./dist/cucumber.mjs"
+    },
+    "./formatter": {
+      "types": "./dist/formatter.d.ts",
+      "default": "./dist/formatter.mjs"
     }
   },
   "scripts": {
-    "build": "rimraf dist && rollup -c"
+    "build": "rimraf dist && rollup -c",
+    "dev": "rimraf dist && rollup -cw"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
