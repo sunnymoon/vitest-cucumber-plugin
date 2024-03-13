@@ -40,7 +40,7 @@ export default class CucumberRunner implements VitestRunner {
     }
 
     async importFile(filepath: string, source: VitestRunnerImportSource): Promise<unknown> {
-        // console.log("importFile", filepath, source)
+        console.log("importFile", filepath, source)
         if (source === 'collect') {
 
             const glueCodeFiles = await fg(this.cucumberConfig.glueCode, {

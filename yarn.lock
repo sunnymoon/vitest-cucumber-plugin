@@ -1140,6 +1140,11 @@ human-signals@^5.0.0:
   resolved "https://nexus.linkare.com/nexus/repository/npm-all/human-signals/-/human-signals-5.0.0.tgz#42665a284f9ae0dade3ba41ebc37eb4b852f3a28"
   integrity sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==
 
+import-meta-resolve@^4.0.0:
+  version "4.0.0"
+  resolved "https://nexus.linkare.com/nexus/repository/npm-all/import-meta-resolve/-/import-meta-resolve-4.0.0.tgz#0b1195915689f60ab00f830af0f15cc841e8919e"
+  integrity sha512-okYUR7ZQPH+efeuMJGlq4f8ubUgO50kByRPyt/Cy1Io4PSRsPjxME+YlVaCOx+NIToW7hCsZNFJyTPFFKepRSA==
+
 indent-string@^4.0.0:
   version "4.0.0"
   resolved "https://nexus.linkare.com/nexus/repository/npm-all/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"

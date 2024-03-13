@@ -22,8 +22,6 @@ const entries = {
   'cucumber-helpers': 'src/cucumber-helpers.ts',
 }
 
-const dtsEntries = entries;
-
 const external = [
   ...builtinModules,
   ...Object.keys(pkg.dependencies),
@@ -59,47 +57,40 @@ export default ({ watch }) => defineConfig([
   {
     input: entries,
     treeshake: true,
-    output: {
-      dir: 'dist',
-      format: 'esm',
-      chunkFileNames: (chunkInfo) => {
-        let id = chunkInfo.facadeModuleId || Object.keys(chunkInfo.moduleIds).find(i => !i.includes('node_modules') && (i.includes('src/') || i.includes('src\\')))
-        if (id) {
-          id = normalize(id)
-          const parts = Array.from(
-            new Set(relative(process.cwd(), id).split(/\//g)
-              .map(i => i.replace(/\..*$/, ''))
-              .filter(i => !['src', 'index', 'dist', 'node_modules'].some(j => i.includes(j)) && i.match(/^[\w_-]+$/))),
-          )
-          if (parts.length)
-            return `chunks/${parts.slice(-2).join('-')}.[hash].js`
-        }
-        return 'vendor/[name].[hash].js'
-      },
-    },
-    external,
-    plugins: [
-      ...plugins,
-    ],
-    onwarn,
-  },
-  {
-    input: 'src/vitest-cucumber-plugin.ts',
     output: [
       {
-        file: 'dist/vitest-cucumber-plugin.cjs',
-        format: 'cjs',
+        dir: 'dist',
+        format: 'esm',
+        sourcemap: true,
+        entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.js`,
       },
       {
-        file: 'dist/vitest-cucumber-plugin.js',
-        format: 'esm',
-      },
+        dir: 'dist',
+        format: 'cjs',
+        sourcemap: true,
+        entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.cjs`,
+      }
     ],
     external,
-    plugins,
+    plugins
   },
+  // {
+  //   input: 'src/vitest-cucumber-plugin.ts',
+  //   output: [
+  //     {
+  //       file: 'dist/vitest-cucumber-plugin.cjs',
+  //       format: 'cjs',
+  //     },
+  //     {
+  //       file: 'dist/vitest-cucumber-plugin.js',
+  //       format: 'esm',
+  //     },
+  //   ],
+  //   external,
+  //   plugins,
+  // },
   {
-    input: dtsEntries,
+    input: entries,
     output: {
       dir: 'dist',
       entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.d.ts`,
@@ -113,8 +104,3 @@ export default ({ watch }) => defineConfig([
 ])
 
 
-function onwarn(message) {
-  if (['EMPTY_BUNDLE', 'CIRCULAR_DEPENDENCY'].includes(message.code))
-    return
-  console.error(message)
-}
