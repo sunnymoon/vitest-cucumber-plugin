@@ -1,0 +1,59 @@
+{
+  "name": "@linkare/vitest-cucumberjs",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "packageManager": "yarn@1.22.21",
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/index.cjs",
+        "types": "./dist/index.d.ts"
+      }
+    },
+    "./config": {
+      "types": "./dist/vitest-cucumber-plugin.d.ts",
+      "require": "./dist/vitest-cucumber-plugin.js",
+      "default": "./dist/vitest-cucumber-plugin.js"
+    },
+    "./runner": {
+      "types": "./dist/vitest-cucumber-runner.d.ts",
+      "require": "./dist/vitest-cucumber-runner.js",
+      "default": "./dist/vitest-cucumber-runner.js"
+    }
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/node": "^20.11.25",
+    "esbuild": "^0.20.1",
+    "rimraf": "^5.0.5",
+    "rollup": "^4.13.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.3.1",
+    "fast-glob": "^3.3.2",
+    "micromatch": "^4.0.5",
+    "vite": "5.1.4",
+    "vitest": "^1.3.1"
+  }
+}
