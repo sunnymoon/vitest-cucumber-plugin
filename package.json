@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "packageManager": "yarn@1.22.21",
   "engines": {
@@ -15,25 +16,28 @@
   "exports": {
     ".": {
       "import": {
-        "default": "./dist/index.mjs",
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/index.cjs",
         "types": "./dist/index.d.ts"
       }
     },
     "./config": {
       "types": "./dist/plugin.d.ts",
-      "default": "./dist/plugin.mjs"
+      "require": "./dist/plugin.cjs",
+      "default": "./dist/plugin.js"
     },
     "./runner": {
       "types": "./dist/runner.d.ts",
-      "default": "./dist/runner.mjs"
+      "require": "./dist/runner.cjs",
+      "default": "./dist/runner.js"
     },
     "./cucumber": {
       "types": "./dist/cucumber.d.ts",
-      "default": "./dist/cucumber.mjs"
-    },
-    "./formatter": {
-      "types": "./dist/formatter.d.ts",
-      "default": "./dist/formatter.mjs"
+      "require": "./dist/cucumber.cjs",
+      "default": "./dist/cucumber.js"
     }
   },
   "scripts": {

@@ -40,6 +40,7 @@ function withInternalStuff(cucumberConfig: CucumberInlineConfig, config: UserCon
     );
 
     const mergedConfig= mergeConfig(config, {
+        isolate: false,
         test: {
             runner: thisModuleResolvedRunner,
             include: cucumberConfig.features,
@@ -54,7 +55,5 @@ function withInternalStuff(cucumberConfig: CucumberInlineConfig, config: UserCon
             }
         }
     });
-
-    // console.log(mergedConfig);
     return mergedConfig;
 }
