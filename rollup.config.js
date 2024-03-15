@@ -49,13 +49,7 @@ export default ({ watch }) => defineConfig([
         dir: 'dist',
         format: 'esm',
         sourcemap: true,
-        entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.js`,
-      },
-      {
-        dir: 'dist',
-        format: 'cjs',
-        sourcemap: true,
-        entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.cjs`,
+        entryFileNames: chunk => `${normalize(chunk.name).replace('src/', '')}.mjs`,
       }
     ],
     external,

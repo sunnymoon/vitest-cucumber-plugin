@@ -12,7 +12,7 @@ import {
     CukesAfter,
     CukesAfterAll,
     Feature
-} from './types.js';
+} from './types.ts';
 
 export const orderedDocuments: Feature[] = [];
 export const setFeature = (name: string) => {
@@ -68,7 +68,7 @@ const StepCollector = <WorldType>(cukesCollectorFn: IDefineStepGeneric<WorldType
 
         const realUserCodeFn = code;
         //This is the second argument of the Given(..., here!), which is a TestStepFunction<WorldType>
-        const cukeMakeBelieveStep=(...args: any[])=> {
+        function cukeMakeBelieveStep(...args: any[]) {
             const newStep = {
                 pattern,
                 userCode: async () => {

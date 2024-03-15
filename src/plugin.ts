@@ -1,5 +1,3 @@
-// import type * as vitest from 'vitest';
-// import type * as vite from 'vite';
 import { fileURLToPath } from 'node:url';
 
 import { moduleResolve } from 'import-meta-resolve';
@@ -8,6 +6,8 @@ import { mergeConfig } from 'vitest/config';
 import type { ConfigEnv, UserConfigExport, UserConfig } from 'vitest/config';
 
 import myPkg from '../package.json';
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
+import * as path from 'node:path';
 
 export interface CucumberInlineConfig {
     glueCode?: string[];
@@ -15,22 +15,23 @@ export interface CucumberInlineConfig {
     importMetaUrl: string;
 }
 
-export async function withCucumber( cucumberConfig: CucumberInlineConfig, config: UserConfigExport) {
-    if(typeof config ==='function' ) {
+export async function withCucumber(cucumberConfig: CucumberInlineConfig, config: UserConfigExport) {
+    if (typeof config === 'function') {
         return async (ctx: ConfigEnv) => {
             const resolvedConfig = await config(ctx);
-            return withInternalStuff(cucumberConfig, resolvedConfig);
+            return injectCucumberRunner(cucumberConfig, resolvedConfig);
         }
     }
 
     const resolvedConfig = await config;
-    return withInternalStuff(cucumberConfig, resolvedConfig);
+    return injectCucumberRunner(cucumberConfig, resolvedConfig);
 }
 
 
 
-function withInternalStuff(cucumberConfig: CucumberInlineConfig, config: UserConfig): UserConfig {
-    
+function injectCucumberRunner(cucumberConfig: CucumberInlineConfig, config: UserConfig): UserConfig {
+
+    //@ts-ignore
     const thisModuleResolvedRunner = fileURLToPath(
         moduleResolve(`${myPkg.name}/runner`,
             new URL(".", cucumberConfig.importMetaUrl),
@@ -38,8 +39,16 @@ function withInternalStuff(cucumberConfig: CucumberInlineConfig, config: UserCon
             true
         )
     );
+    const thisModuleResolvedWrapper = fileURLToPath(
+        moduleResolve(`${myPkg.name}/wrapper`,
+            new URL(".", cucumberConfig.importMetaUrl),
+            undefined,
+            true
+        )
+    ).replace("/dist/wrapper.mjs", "/src/wrapper.ts");
+    const newWrapperLocation = copyWrapper(thisModuleResolvedWrapper);
 
-    const mergedConfig= mergeConfig(config, {
+    const mergedConfig = mergeConfig(config, {
         isolate: false,
         test: {
             runner: thisModuleResolvedRunner,
@@ -51,9 +60,23 @@ function withInternalStuff(cucumberConfig: CucumberInlineConfig, config: UserCon
                 ],
             cucumber: {
                 glueCode: cucumberConfig.glueCode || ['features/step_definitions/*.ts'],
-                importMetaUrl: cucumberConfig.importMetaUrl
+                wrapper: newWrapperLocation
             }
         }
     });
     return mergedConfig;
+}
+
+function copyWrapper(thisModuleResolvedWrapper: string): string {
+
+    const newLocation = `${process.cwd()}/.vite-test-runner/wrapper.ts`;
+
+    if (!existsSync(newLocation)) {
+        mkdirSync(path.dirname(newLocation), { recursive: true });
+        copyFileSync(thisModuleResolvedWrapper, newLocation);
+        copyFileSync(thisModuleResolvedWrapper.replace("/wrapper.ts","/steps.ts"), newLocation.replace("/wrapper.ts","/steps.ts"));
+        copyFileSync(thisModuleResolvedWrapper.replace("/wrapper.ts","/types.ts"), newLocation.replace("/wrapper.ts","/types.ts"));
+    }
+
+    return newLocation;
 }

@@ -3,8 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "packageManager": "yarn@1.22.21",
   "engines": {
@@ -16,28 +15,29 @@
   "exports": {
     ".": {
       "import": {
-        "default": "./dist/index.js",
-        "types": "./dist/index.d.ts"
-      },
-      "require": {
-        "default": "./dist/index.cjs",
+        "default": "./dist/index.mjs",
         "types": "./dist/index.d.ts"
       }
     },
     "./config": {
       "types": "./dist/plugin.d.ts",
-      "require": "./dist/plugin.cjs",
-      "default": "./dist/plugin.js"
+      "default": "./dist/plugin.mjs"
     },
     "./runner": {
       "types": "./dist/runner.d.ts",
-      "require": "./dist/runner.cjs",
-      "default": "./dist/runner.js"
+      "default": "./dist/runner.mjs"
     },
     "./cucumber": {
       "types": "./dist/cucumber.d.ts",
-      "require": "./dist/cucumber.cjs",
-      "default": "./dist/cucumber.js"
+      "default": "./dist/cucumber.mjs"
+    },
+    "./wrapper": {
+      "types": "./dist/wrapper.d.ts",
+      "default": "./dist/wrapper.mjs"
+    },
+    "./steps": {
+      "types": "./dist/steps.d.ts",
+      "default": "./dist/steps.mjs"
     }
   },
   "scripts": {

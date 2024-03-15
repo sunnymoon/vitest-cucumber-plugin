@@ -1,14 +1,2 @@
-// export {
-//     Given,
-//     When,
-//     Then,
-//     BeforeStep,
-//     Before,
-//     BeforeAll,
-//     AfterStep,
-//     After,
-//     AfterAll
-// } from './cucumber.js';
-
-export { withCucumber } from './plugin.js';
-export type { CucumberInlineConfig } from './plugin.js';
+export { withCucumber } from './plugin.ts';
+export type { CucumberInlineConfig } from './plugin.ts';

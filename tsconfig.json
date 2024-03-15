@@ -1,27 +1,25 @@
 {
   "compilerOptions": {
-    
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "NodeNext",
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "skipLibCheck": true,
     "esModuleInterop": true,
-
     /* Bundler mode */
     "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
     "emitDeclarationOnly": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": false,
-
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    
     /* Output */
     "noEmit": true,
     "outDir": "./dist",
@@ -30,9 +28,16 @@
     "mapRoot": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "types": [
+      "vitest/importMeta"
+    ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "**/dist/**"],
- 
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/dist/**"
+  ],
 }
