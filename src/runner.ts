@@ -33,18 +33,13 @@ export default class CucumberRunner implements VitestRunner {
     async importFile(filepath: string, source: VitestRunnerImportSource): Promise<void> {
         //console.log("importFile", filepath, source)
         if (source === 'collect') {
-            
-            console.log("Executing", this.config.cucumber.wrapper);
-            globalThis._cenas={
-                glueCode: this.config.cucumber.glueCode,
-                filepath: filepath
+
+            const module = await this.__vitest_executor.executeId(this.config.cucumber.wrapper);
+            try {
+                await module.mapCucumberToVitest(this.config.cucumber.glueCode, filepath, this.__vitest_executor);
+            } catch (e) {
+                console.error(e);
             }
-            await this.__vitest_executor.executeId(this.config.cucumber.wrapper);
-            // try {
-            //     await module.mapCucumberToVitest(this.config.cucumber.glueCode, filepath,this.__vitest_executor);
-            // } catch (e) {
-            //     console.error(e);
-            // }
         }
     }//importFile
 
