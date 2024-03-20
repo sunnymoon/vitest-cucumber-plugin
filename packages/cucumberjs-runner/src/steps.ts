@@ -214,6 +214,13 @@ const HookStepCollector = (hooksCollectorFn: IHookStepGeneric, kind: "BeforeStep
     };
 };
 
+
+function captureOriginalLocation(stack: string) {
+    const lines = stack.split('\n');
+    const firstNonCucumberLine = lines.findIndex((line) => !line.includes('cucumberjs-runner'));
+    return lines.slice(firstNonCucumberLine).join('\n');
+}
+
 const HookTestCaseCollector = (hooksCollectorFn: IHookTestCaseGeneric, kind: "Before" | "After") => {
     return (
         options: string | IHookTestCaseOptions | IHookTestCaseCode,

@@ -1,6 +1,8 @@
 import type { VitestRunnerImportSource } from '@vitest/runner';
 
-import { ResolvedConfig, afterAll as afterAll, beforeAll, describe, test } from 'vitest';
+import c from 'picocolors';
+
+import { ResolvedConfig, afterAll as afterAll, beforeAll } from 'vitest';
 
 import { supportCodeLibraryBuilder } from '@cucumber/cucumber';
 import { loadConfiguration, runCucumber } from '@cucumber/cucumber/api';
@@ -48,6 +50,7 @@ import type {
 
 import { VitestTestRunner } from 'vitest/runners';
 import { PendingStepImplementationError } from './steps.ts';
+import * as picocolors from 'picocolors';
 
 declare global {
     var _cucumberHelpers: {
@@ -243,7 +246,7 @@ export default class CucumberRunner extends VitestTestRunner {
 
                             if (scenario.befores.length > 0) {
                                 for (const before of scenario.befores) {
-                                    //beforeScenario(`Before ${scenario.name}`, before.userCode.bind(scenarioCtx));
+                                    beforeScenario(c.dim(`Before (Cucumber Hook)`), before.userCode.bind(scenarioCtx));
                                 }
                             }
 
@@ -300,7 +303,7 @@ export default class CucumberRunner extends VitestTestRunner {
 
                             if (scenario.afters.length > 0) {
                                 for (const after of scenario.afters) {
-                                    // globalThis._vitestHelpers.afterScenario.apply(scenarioCtx, [after.userCode.bind(scenarioCtx)]);
+                                    afterScenario(c.dim(`After (Cucumber Hook)`), after.userCode.bind(scenarioCtx));
                                 }
                             }
                         });
@@ -363,7 +366,7 @@ export default class CucumberRunner extends VitestTestRunner {
         if (gherkinDocument.feature) {
             this.indexCurrentDocumentByAstNodeId(gherkinDocument);
             const tags = gherkinDocument.feature.tags.map((tag) => tag.name);
-            setFeature(`${this.formatTags(tags)}${gherkinDocument.feature.keyword}: ${gherkinDocument.feature.name} (@ ${gherkinDocument.uri}:${gherkinDocument.feature.location.line}:${gherkinDocument.feature.location.column} )`);
+            setFeature(`${this.formatTags(tags)}\n     ${c.magenta(gherkinDocument.feature.keyword + ":")} ${gherkinDocument.feature.name} ` + c.dim(`(${gherkinDocument.uri}:${gherkinDocument.feature.location.line}:${gherkinDocument.feature.location.column} )`));
         }
     }
 
@@ -464,7 +467,7 @@ export default class CucumberRunner extends VitestTestRunner {
     }
 
     formatTags(tags: string[] | undefined) {
-        const tagString = (tags ?? []).join(' ');
+        const tagString = (tags ?? []).map((tag) => c.green(c.italic(`${tag}`))).join(' ');
         return tagString.length > 0 ? `${tagString} ` : '';
     }
 
@@ -500,7 +503,7 @@ export default class CucumberRunner extends VitestTestRunner {
         const scenarioContent = scenario.astNodeIds.flatMap((astNodeId) =>
             this.elementsByAstNodeId[astNodeId]
         )[0];
-        setScenario(`${this.formatTags(scenarioContent.tags)}${scenarioContent.keyword}: ${scenarioContent.name} (@ ${this.currentDocument?.uri}:${scenarioContent.line}:${scenarioContent.column})`);
+        setScenario(`${this.formatTags(scenarioContent.tags)}\n       ${c.magenta(scenarioContent.keyword + ":")} ${scenarioContent.name} ` + c.dim(`(${this.currentDocument?.uri}:${scenarioContent.line}:${scenarioContent.column})`));
     }
 
     onTestStepStarted(testStepStarted: TestStepStarted) {
@@ -509,7 +512,7 @@ export default class CucumberRunner extends VitestTestRunner {
         if (pickleStepId) {
             const pickleStep = this.steps[pickleStepId];
             const stepContent = pickleStep.astNodeIds.map((astNodeId) => this.elementsByAstNodeId[astNodeId])[0];
-            setCurrentStepText(`${stepContent.keyword}${stepContent.name} (@ ${this.currentDocument?.uri}:${stepContent.line}:${stepContent.column})`);
+            setCurrentStepText(`${c.magenta(stepContent.keyword)}${stepContent.name} ` + c.dim(`(${this.currentDocument?.uri}:${stepContent.line}:${stepContent.column})`));
         }
     }
 

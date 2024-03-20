@@ -4,14 +4,18 @@ import { describe, test } from 'vitest';
 
 const labeledCreateTaskCollector = (kind: "Before" | "After") => {
     return createTaskCollector(function (name, handler, timeout) {
-        console.log("beforeTest");
-        getCurrentSuite().task(name, {
+        const task = getCurrentSuite().task(name, {
             meta: {
                 kind
             },
             handler,
             timeout,
+            concurrent: false,
+            repeats: 0,
+            retry: 0,
+            sequential: true
         });
+        console.dir({ task });
     });
 }
 

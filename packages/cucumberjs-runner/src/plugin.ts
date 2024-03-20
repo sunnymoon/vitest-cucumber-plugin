@@ -6,18 +6,14 @@ import type { ConfigEnv, UserConfigExport, UserConfig } from 'vitest/config';
 
 import { Plugin, ResolvedConfig } from 'vite';
 
-import { InlineConfig } from 'vitest';
-
 export interface CucumberInlineConfig {
     glueCode?: string[];
     features?: string[];
 }
 
-declare module 'vite' {
-    interface UserConfig {
-        test: InlineConfig & {
-            cucumber: CucumberInlineConfig;
-        }
+declare module 'vitest/config' {
+    interface InlineConfig {
+        cucumber: CucumberInlineConfig;
     }
     interface ResolvedConfig {
         test: InlineConfig & {

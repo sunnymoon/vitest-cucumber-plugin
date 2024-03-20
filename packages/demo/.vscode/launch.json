@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "env": {
+                "PATH:": "/home/jpereira/.nvm/versions/node/v18.18.2/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/home/jpereira/.local/bin:/home/jpereira/bin:/home/jpereira/.local/bin:/home/jpereira/bin:/home/jpereira/.local/bin:/home/jpereira/bin"
+            },
+            "request": "launch",
+            "name": "Debug Vitest",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "vitest",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}
